@@ -36,7 +36,7 @@ public class CameraSnap : MonoBehaviour {
 		Application.CaptureScreenshot(screenshotPath);
 		yield return null;
         canvas.enabled = true;
-		Debug.Log("captured");
+		Debug.Log("captured to "+screenshotPath);
         _mainController.RefreshGalleryIcon();
     }
 }

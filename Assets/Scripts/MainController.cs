@@ -45,7 +45,7 @@ public class MainController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!_focusModeSet)
+		if (true)//x!_focusModeSet)
         {
             _focusModeSet = CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
         }

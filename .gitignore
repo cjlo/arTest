@@ -6,6 +6,7 @@ obj/
 Temp/
 *.csproj
 *.sln
+mac_output.app/
 
 #################
 ## Eclipse
@@ -222,3 +223,9 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+mac_output.app/Contents/Resources/Data/globalgamemanagers
+
+mac_output.app/Contents/Plugins/VuforiaWrapper.bundle/Contents.meta
+
+mac_output.app/Contents/Plugins/VuforiaWrapper.bundle/Contents/MacOS.meta

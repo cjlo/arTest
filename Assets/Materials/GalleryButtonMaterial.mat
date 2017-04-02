@@ -78,7 +78,7 @@ Material:
     - first:
         name: _Mask
       second:
-        m_Texture: {fileID: 2800000, guid: f1de42648e5f1244c90ad39cac86fc59, type: 3}
+        m_Texture: {fileID: 2800000, guid: eacfaaf37411d4bad900c0cccab9eac9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
