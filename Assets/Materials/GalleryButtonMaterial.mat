@@ -73,8 +73,8 @@ Material:
         name: _MainTex
       second:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+        m_Scale: {x: 0.6250886, y: 1}
+        m_Offset: {x: 0.18745571, y: 0}
     - first:
         name: _Mask
       second:
@@ -111,7 +111,7 @@ Material:
       second: 15
     - first:
         name: _Cutoff
-      second: 0.135
+      second: 0.024
     - first:
         name: _DetailNormalMapScale
       second: 1

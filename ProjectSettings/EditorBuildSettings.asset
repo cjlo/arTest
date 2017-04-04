@@ -6,4 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/scene_HUD.unity
+    path: Assets/Scenes/loadingScreen.unity
+  - enabled: 1
+    path: Assets/Scenes/scene_HUD.unity
