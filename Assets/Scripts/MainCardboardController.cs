@@ -16,6 +16,9 @@ public class MainCardboardController : MonoBehaviour {
 	public GameObject buttonPanelGO;
 	public GameObject loadingGO;
 
+	public Slider rotationBufferSizeSlider;
+	public Text rotationBufferSizeText;
+
 	private GameObject _foundGO = null;
 //
 //	void Start(){
@@ -25,6 +28,7 @@ public class MainCardboardController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		
 		 CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
 
 //		foreach (GameObject  go in _foundGOList) {
@@ -45,61 +49,43 @@ public class MainCardboardController : MonoBehaviour {
 		if (_foundGO == null) {
 			return;
 		}
-		Transform offsetTransform = _foundGO.transform.FindChild ("offset");
-		Debug.Assert (offsetTransform, "offset GO not found for " + _foundGO.name);
-		Debug.Log ("Delta scale " + deltaScaleValue);
-		float newScale = offsetTransform.localScale.x + (deltaScaleValue-1f) * scaleMultiplier;
-		newScale = Mathf.Clamp (newScale, minScale, maxScale);
-		Vector3 newScaleVec3;
-		newScaleVec3.x = newScale;
-		newScaleVec3.y = newScale;
-		newScaleVec3.z = newScale;
-		offsetTransform.localScale = newScaleVec3;
-
+		DenoisedTransform dt = _foundGO.GetComponent<DenoisedTransform> ();
+		dt.ScaleOffset (deltaScaleValue, minScale, maxScale, scaleMultiplier);
 	}
 
 	public void MoveCurrentCardboard( Vector2 screenSpacePos, Vector2 screenSpacePrevPos ){
 		if (_foundGO == null) {
 			return;
 		}
-		Transform offsetTransform = _foundGO.transform.FindChild ("offset");
-		Debug.Assert (offsetTransform, "offset GO not found for " + _foundGO.name);
-			
-		Vector3 screenSpacePos3d;
-		screenSpacePos3d.x = screenSpacePos.x;
-		screenSpacePos3d.y = screenSpacePos.y;
-		screenSpacePos3d.z = _foundGO.transform.localPosition.z;
-		Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenSpacePos3d);
-
-		Vector3 screenSpacePrevPos3d;
-		screenSpacePrevPos3d.x = screenSpacePrevPos.x;
-		screenSpacePrevPos3d.y = screenSpacePrevPos.y;
-		screenSpacePrevPos3d.z = _foundGO.transform.localPosition.z;
-		Vector3 worldPrevPos = Camera.main.ScreenToWorldPoint (screenSpacePrevPos3d);
-
-		Vector3 delta3dPos = worldPos - worldPrevPos;
-
-		Vector3 offsetTransformPos = offsetTransform.position;
-		offsetTransform.position = offsetTransformPos + delta3dPos;
+		DenoisedTransform dt = _foundGO.GetComponent<DenoisedTransform> ();
+		dt.MoveOffset (screenSpacePos, screenSpacePrevPos);
 	}
 
 	public void ApplyDefaultOffset(){
 		if (_foundGO == null) {
 			return;
 		}
-		Transform offsetTransform = _foundGO.transform.FindChild ("offset");
-		Debug.Assert (offsetTransform, "offset GO not found for " + _foundGO.name);
-		offsetTransform.localPosition = Vector3.zero;
-		offsetTransform.localScale = Vector3.one;
+		DenoisedTransform dt = _foundGO.GetComponent<DenoisedTransform> ();
+		dt.ApplyDefaultOffset ();
+
 	}
 
 	public void ObjectFound(GameObject foundGO){
 		_foundGO = foundGO;
+
+		DenoisedTransform dt = _foundGO.GetComponent<DenoisedTransform> ();
+		rotationBufferSizeSlider.gameObject.SetActive (true);
+		rotationBufferSizeText.gameObject.SetActive (true);
+		rotationBufferSizeSlider.value = dt.rotationBufferSize;
+		rotationBufferSizeText.text = ""+dt.rotationBufferSize;
 		// TODO enable DefaultOffset button
 	}
 
 	public void ObjectLost(GameObject lostGO){
 		_foundGO = null;
+		rotationBufferSizeSlider.gameObject.SetActive (false);
+		rotationBufferSizeText.gameObject.SetActive (false);
+		rotationBufferSizeText.text = "";
 		// TODO disable DefaultOffset button
 	}
 
@@ -107,6 +93,7 @@ public class MainCardboardController : MonoBehaviour {
 	{
 		Debug.Log("screen capturing");
 		StartCoroutine(CaptureScreen());
+//		CameraDevice.CameraDeviceMode
 
 	}
 
@@ -152,8 +139,7 @@ public class MainCardboardController : MonoBehaviour {
 			}
 		}
 
-		if (latestFile == null)
-		{
+		if (latestFile == null) {
 			return "";
 		}
 		return latestFile.Name;
@@ -170,5 +156,16 @@ public class MainCardboardController : MonoBehaviour {
 		if (!isPaused) {
 			openGallery.RefreshGalleryIcon ();
 		}
+	}
+
+	public void OnRotationBufferSizeChange( float newValue ){
+		if (!_foundGO) {
+			return;
+		}
+		int newValueInt = (int)newValue;
+		rotationBufferSizeText.text = ""+newValueInt;
+		DenoisedTransform dt = _foundGO.GetComponent<DenoisedTransform> ();
+		dt.rotationBufferSize = newValueInt;
+
 	}
 }

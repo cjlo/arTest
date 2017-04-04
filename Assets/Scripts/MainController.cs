@@ -22,7 +22,7 @@ public class MainController : MonoBehaviour
     private GameObject _CurrentAugmentedGO = null;
     public bool Scaling = true;
     private float _TimeElapsed = 0f;
-    private bool _focusModeSet = false;
+    //private bool _focusModeSet = false;
 
 
     void Start()
@@ -45,10 +45,8 @@ public class MainController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (true)//x!_focusModeSet)
-        {
-            _focusModeSet = CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
-        }
+		CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+        
 
         if (Scaling)
         {

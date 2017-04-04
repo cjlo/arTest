@@ -8,6 +8,7 @@ public class PosterTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 
 	public MainCardboardController mainCardboardController;
 	private TrackableBehaviour mTrackableBehaviour;
+	private DenoisedTransform _denoisedTransform;
 
 	// Use this for initialization
 	void Start () {
@@ -15,6 +16,7 @@ public class PosterTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 		if (mTrackableBehaviour) {
 			mTrackableBehaviour.RegisterTrackableEventHandler (this);
 		}
+		_denoisedTransform = GetComponent<DenoisedTransform> ();
 	}
 
 	public void OnTrackableStateChanged(TrackableBehaviour.Status previousStatus,
@@ -24,31 +26,37 @@ public class PosterTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 			newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
 		{
 			Debug.Log ("Found GO " + gameObject.name);
+			if (_denoisedTransform) {
+				_denoisedTransform.TrackingFound ();
+			}
 			OnTrackingFound();
 		}
 		else
 		{
 			Debug.Log ("Lost GO " + gameObject.name);
+			if (_denoisedTransform) {
+				_denoisedTransform.TrackingLost ();
+			}
 			OnTrackingLost();
 		}
 	}
 
 	private void OnTrackingFound(){
 		// TODO reset offset position, scale
-		Transform offsetGOTransform = transform.FindChild("offset");
-		if (offsetGOTransform) {
-			offsetGOTransform.gameObject.SetActive (true);
-			offsetGOTransform.localPosition = Vector3.zero;
-			offsetGOTransform.localScale = Vector3.one;
-		}
+//		Transform offsetGOTransform = transform.FindChild("offset");
+//		if (offsetGOTransform) {
+//			offsetGOTransform.gameObject.SetActive (true);
+//			offsetGOTransform.localPosition = Vector3.zero;
+//			offsetGOTransform.localScale = Vector3.one;
+//		}
 		mainCardboardController.ObjectFound (gameObject);
 	}
 
 	private void OnTrackingLost(){
-		Transform offsetGOTransform = transform.FindChild("offset");
-		if (offsetGOTransform) {
-			offsetGOTransform.gameObject.SetActive (false);
-		}
+//		Transform offsetGOTransform = transform.FindChild("offset");
+//		if (offsetGOTransform) {
+//			offsetGOTransform.gameObject.SetActive (false);
+//		}
 		mainCardboardController.ObjectLost (gameObject);
 	}
 }
