@@ -4,6 +4,7 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.UI;
 using System.IO;
+using System.Linq;
 
 public class MainCardboardController : MonoBehaviour {
 
@@ -12,18 +13,35 @@ public class MainCardboardController : MonoBehaviour {
 	public float minScale = 0.5f;
 	public float scaleMultiplier = 1f;
 	public OpenGallery openGallery;
-	public Canvas canvas;
+
+	public Text userAnnotationText;
+	#region screen capture
+	public Camera screenCaptureCamera;
+	public GameObject logoGroup;
 	public GameObject buttonPanelGO;
 	public GameObject loadingGO;
+	public RawImage screenCaptureRawImage;
+	#endregion
 
 	public Slider rotationBufferSizeSlider;
 	public Text rotationBufferSizeText;
 
+	#region camera field
+	public InputField cameraFieldIDInput;
+	public InputField cameraFieldValInput;
+	#endregion
+
+	public Text logText;
+
 	private GameObject _foundGO = null;
+
+	private List<CameraDevice.CameraField> fieldList = new List<CameraDevice.CameraField> ();
+	private List<string> _fieldVals = new List<string>();
 //
-//	void Start(){
+	void Start(){
 //		defaultOffsetButton.enabled = false;
-//	}
+
+	}
 
 
 	// Update is called once per frame
@@ -96,13 +114,23 @@ public class MainCardboardController : MonoBehaviour {
 //		CameraDevice.CameraDeviceMode
 
 	}
+//
+//	public void OnGUI(){
+//
+//	}
 
 	private IEnumerator CaptureScreen()
 	{
 		Debug.Assert (loadingGO, "LoadingGO is not set in " + gameObject.name);
+		buttonPanelGO.SetActive (false);
+		logoGroup.SetActive (true);
+		RenderTexture screenshotTexture = new RenderTexture(Screen.width, Screen.height, 0);
+		screenCaptureRawImage.texture = screenshotTexture;
+		screenCaptureCamera.targetTexture = screenshotTexture;
+
 		yield return null;
-		canvas.enabled = false;
 		yield return new WaitForEndOfFrame();
+
 		string nowStr = System.DateTime.Now.ToString("yyyy-MM-dd.HH.mm.ss.ffff");
 		string screenshotName = "Screenshot" + nowStr + ".png";
 		string screenshotPath = screenshotName;
@@ -110,20 +138,20 @@ public class MainCardboardController : MonoBehaviour {
 		screenshotPath = Application.persistentDataPath + "/" + screenshotPath;
 #endif
 		Application.CaptureScreenshot(screenshotPath);
+		screenCaptureCamera.targetTexture = null;
+		screenCaptureCamera.enabled = false;
 		yield return null;
-		canvas.enabled = true;
-
-		buttonPanelGO.SetActive (false);
-
 		loadingGO.SetActive (true);
 		while (getLatestFile() != screenshotName){
 			yield return null;
 		}
-		loadingGO.SetActive (false);
-		
+
 		Debug.Log("captured to "+screenshotPath);
 		RefreshGalleryIcon();
 		buttonPanelGO.SetActive (true);
+		loadingGO.SetActive (false);
+		logoGroup.SetActive (false);
+		screenCaptureCamera.enabled = true;
 	}
 
 	public string getLatestFile(){
@@ -168,4 +196,56 @@ public class MainCardboardController : MonoBehaviour {
 		dt.rotationBufferSize = newValueInt;
 
 	}
+
+	public void OnExposureChange(float newValue){
+		Debug.Assert (false, "Not implemented yet");
+	}
+
+	public void ShowCameraFields(){
+		string infoText = "";
+		if (!CameraDevice.Instance.IsActive ()) {
+			infoText = "Not active";
+		} else {
+			infoText = "is active";
+		}
+		
+		fieldList = CameraDevice.Instance.GetCameraFields().ToList();
+		_fieldVals.Clear ();
+		string fullText = "";
+		string val = "";
+		int fieldId = 0;
+		foreach (CameraDevice.CameraField cf in fieldList) {
+			CameraDevice.Instance.GetField (cf.Key, out val);
+			fullText += ""+fieldId + "."+cf.Key + ":" + (int)cf.Type +":"+ val +"\n";
+			fieldId++;
+			_fieldVals.Add (val);
+		}
+		logText.text = infoText + ", Num fields: "+fieldList.Count+"\n"+fullText + logText.text;
+	}
+
+	public void ModifyCameraField(){
+		Debug.Assert (false, "Not implemented yet");
+	}
+
+	public void ShowTorch(bool value){
+		CameraDevice.Instance.SetFlashTorchMode (value);
+	}
+
+	public void OpenTouchScreenKeyboard(){
+		TouchScreenKeyboard.Open ("default text", TouchScreenKeyboardType.Default, false, false, false, false, "Type text");
+
+	}
+
+//	public void OnRenderImage(RenderTexture src, RenderTexture dst){
+//		if (_takingScreenshot) {
+//			RenderTexture screenshotTexture = new RenderTexture(Screen.width, Screen.height, 0);
+//			Graphics.Blit (src, screenshotTexture);
+//			screenCaptureRawImage.texture = screenshotTexture;
+//			_takingScreenshot = false;
+//		}
+//	}
+//
+//	void OnRenderImage(RenderTexture src, RenderTexture dest) {
+//		Graphics.Blit(src, dest);
+//	}
 }

@@ -19,4 +19,11 @@ public class MainSceneLoader : MonoBehaviour {
 			yield return null;
 		}
 	}
+
+	void Update () {
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Application.Quit ();
+		}
+	}
+
 }

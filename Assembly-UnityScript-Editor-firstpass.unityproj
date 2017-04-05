@@ -49,6 +49,7 @@
      <Compile Include="Assets\Plugins\Editor\Unzip.js" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_Skin.shader" />
+     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_fuku.shader" />
      <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_WrappingPaper.shader" />
      <None Include="Assets\Vuforia\Shaders\ColoredLines.shader" />
@@ -59,6 +60,7 @@
      <None Include="Assets\Vuforia\Shaders\VertexLitWithZ.shader" />
      <None Include="Assets\PQAssets\Query-Chan\license_en.txt" />
      <None Include="Assets\Vuforia\Shaders\RenderVideoBackground.shader" />
+     <None Include="Assets\readme_SDK.txt" />
      <None Include="Assets\StreamingAssets\QCAR\FullPoster.xml" />
      <None Include="Assets\TouchScript\license.txt" />
      <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_Standard.shader" />
@@ -73,6 +75,7 @@
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_fuku_ds.shader" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye_blend.shader" />
      <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_velvet.shader" />
+     <None Include="Assets\license_3rdpartynotice.txt" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_hair_ds.shader" />
      <None Include="Assets\StreamingAssets\QCAR\Tea.xml" />
      <None Include="Assets\Vuforia\Editor\WebcamProfiles\profiles.xml" />
@@ -87,8 +90,6 @@
      <None Include="Assets\UnityChan\Stage\Shader\AlphaMask.shader" />
      <None Include="Assets\StreamingAssets\QCAR\artest_device_db.xml" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eyelash_blend.shader" />
-     <None Include="Assets\license_3rdpartynotice.txt" />
-     <None Include="Assets\readme_SDK.txt" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_hada.shader" />
      <None Include="Assets\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_hada_blend.shader" />
      <None Include="Assets\StreamingAssets\QCAR\heads.xml" />
@@ -96,7 +97,6 @@
      <None Include="Assets\TouchScript\Shaders\DebugMultiplyNoDepthTest.shader" />
      <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
      <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_Ribbon.shader" />
-     <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\PQAssets\Query-Chan\Shaders\PQ_TreeLight.shader" />
      <None Include="Assets\TouchScript\Examples\_misc\Shaders\UnlitColor.shader" />
      <None Include="Assets\TouchScript\Examples\_misc\Shaders\BorderDiffuse.shader" />
